@@ -1,16 +1,50 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 let
   enabled = config.illogical-impulse.enable;
-  selfPkgs = import ../pkgs {
-    inherit pkgs;
-    quickshell = config.illogical-impulse.hyprland.quickshellPackage;
-  };
 in
 {
   config = lib.mkIf enabled {
-    home.file.".config/foot" = {
-      source = "${selfPkgs.illogical-impulse-dotfiles}/foot";
-      recursive = true;
+    programs.foot = {
+      enable = true;
+      settings = {
+        main = {
+          shell = "fish";
+          term = "xterm-256color";
+          title = "foot";
+          font = "JetBrainsMono Nerd Font:size=11";
+          letter-spacing = 0;
+          dpi-aware = "no";
+          pad = "25x25";
+          bold-text-in-bright = "no";
+        };
+        scrollback = {
+          lines = 10000;
+        };
+        cursor = {
+          style = "beam";
+          blink = "no";
+          beam-thickness = 1.5;
+        };
+        key-bindings = {
+          scrollback-up-page = "Page_Up";
+          scrollback-down-page = "Page_Down";
+          clipboard-copy = "Control+c";
+          clipboard-paste = "Control+v";
+          search-start = "Control+f";
+          font-increase = "Control+plus Control+equal Control+KP_Add";
+          font-decrease = "Control+minus Control+KP_Subtract";
+          font-reset = "Control+0 Control+KP_0";
+        };
+        search-bindings = {
+          cancel = "Escape";
+          find-prev = "Shift+F3";
+          find-next = "F3 Control+G";
+          delete-prev-word = "Control+BackSpace";
+        };
+        text-bindings = {
+          "\\x03" = "Control+Shift+c";
+        };
+      };
     };
   };
 }
