@@ -30,15 +30,11 @@ in
       recursive = true;
     };
 
-    # Deploy custom/ skeleton (user-editable overrides)
-    home.activation.hyprCustomSkeleton = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      hypr_custom="$HOME/.config/hypr/custom"
-      if [ ! -d "$hypr_custom" ]; then
-        mkdir -p "$hypr_custom"
-        cp -r "${dotfiles}/hypr/custom/"* "$hypr_custom/"
-        chmod -R u+w "$hypr_custom"
-      fi
-    '';
+    # Deploy custom/ directory (user-editable override templates)
+    home.file.".config/hypr/custom" = {
+      source = "${dotfiles}/hypr/custom";
+      recursive = true;
+    };
 
     # Deploy hypridle and hyprlock configs from upstream
     home.file.".config/hypr/hypridle.conf" = {
@@ -57,14 +53,18 @@ in
       text = monitorsConf;
     };
 
-    # Empty workspaces.conf for nwg-displays compatibility
-    # Using home.file with mutable text - nwg-displays can modify this file
-    home.file.".config/hypr/workspaces.conf" = {
-      text = ''
-        # This file is managed by nwg-displays
-        # Add workspace monitor assignments here
-      '';
-    };
+    # Workspaces.conf - create via home.file then make mutable in activation
+    home.file.".config/hypr/workspaces.conf".text = "# Managed by nwg-displays\n";
+    home.activation.hyprWorkspacesMutable = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      ws="$HOME/.config/hypr/workspaces.conf"
+      # If it's a symlink (from home.file), replace with a real file so nwg-displays can edit it
+      if [ -L "$ws" ]; then
+        mv "$ws" "$ws.bak"
+        cat "$ws.bak" > "$ws"
+        rm "$ws.bak"
+        chmod u+w "$ws"
+      fi
+    '';
 
     # Shaders
     home.file.".config/hypr/shaders" = {
