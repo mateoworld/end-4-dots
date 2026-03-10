@@ -1,61 +1,103 @@
 { config, pkgs, lib, ... }:
 let
   enabled = config.illogical-impulse.enable;
-  selfPkgs = import ../pkgs { 
-    inherit pkgs; 
-    ags = config.illogical-impulse.hyprland.agsPackage; 
-  };
-  google-fonts = (pkgs.google-fonts.override {
-    fonts = [
-      "Gabarito"
-      "Lexend"
-      "Chakra Petch"
-      "Crimson Text"
-      "Alfa Slab One"
-    ];
-  });
 in
 {
   config = lib.mkIf enabled {
     home = {
-      packages = with pkgs; with nodePackages_latest; with gnome; with libsForQt5; [
-        # gui
-        blueberry
-        pkgs.nautilus
-        yad
-
-        # tools
+      packages = with pkgs; [
+        # Basic CLI & system
+        inetutils
+        libnotify
+        dbus
+        xorg.xlsclients
+        bc
+        uutils-coreutils-noprefix
+        cliphist
+        cmake
+        curlFull
+        wget
         ripgrep
         jq
-        libnotify
+        xdg-user-dirs
+        rsync
+        yq-go
+        eza
+        starship
+
+        # Audio
+        libcava
+        lxqt.pavucontrol-qt
+        wireplumber
+        pipewire
+        libdbusmenu-gtk3
+        playerctl
+
+        # Backlight
+        (geoclue2.override { withDemoAgent = true; })
+        brightnessctl
+        ddcutil
+
+        # Hyprland ecosystem
+        hyprsunset
+        wl-clipboard
+        hyprpicker
+        hyprshot
+
+        # KDE integration
+        kdePackages.bluedevil
+        kdePackages.plasma-nm
+        kdePackages.dolphin
+        kdePackages.systemsettings
+        kdePackages.kconfig
+
+        # Fonts & themes
+        adw-gtk3
+        kdePackages.breeze
+        kdePackages.breeze-icons
+        darkly
+        darkly-qt5
+        fontconfig
+        matugen
+        nerd-fonts.jetbrains-mono
+        material-symbols
+        rubik
+        twemoji-color-font
+
+        # Screen capture
+        slurp
+        swappy
+        tesseract
+        wf-recorder
+
+        # Python / build
+        uv
+        gtk4
+        libadwaita
+        libsoup_3
+        libportal-gtk4
+        gobject-introspection
+
+        # Widgets & tools
+        fuzzel
         glib
-        foot
-        kitty
+        imagemagick
+        hypridle
+        songrec
+        translate-shell
+        wlogout
+        libqalculate
+        upower
+        wtype
         ydotool
 
-        # themes
-        selfPkgs.illogical-impulse-oneui4-icons
-        adwaita-qt6
-        adw-gtk3
-        bibata-cursors
-        morewaita-icon-theme
+        # Terminals
+        foot
+        kitty
 
-        # fonts
-        noto-fonts
-        noto-fonts-cjk-sans
-        google-fonts
-        cascadia-code
-        material-symbols
-      ] ++ (with pkgs.nerd-fonts; [
-        # nerd fonts
-        ubuntu
-        ubuntu-mono
-        jetbrains-mono
-        caskaydia-cove
-        fantasque-sans-mono
-        mononoki
-        space-mono
-      ]);
+        # Cursor
+        bibata-cursors
+      ];
     };
   };
 }
