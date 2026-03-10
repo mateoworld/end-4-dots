@@ -36,5 +36,16 @@ in
       source = "${selfPkgs.illogical-impulse-dotfiles}/kde-material-you-colors";
       recursive = true;
     };
+
+    # Starship prompt config
+    home.file.".config/starship.toml" = {
+      source = "${selfPkgs.illogical-impulse-dotfiles}/starship.toml";
+    };
+
+    # Fontconfig
+    home.file.".config/fontconfig" = {
+      source = "${selfPkgs.illogical-impulse-dotfiles}/fontconfig";
+      recursive = true;
+    };
   };
 }

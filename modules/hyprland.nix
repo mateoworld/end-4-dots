@@ -75,6 +75,12 @@ in
       recursive = true;
     };
 
+    # Wlogout config
+    home.file.".config/wlogout" = {
+      source = "${dotfiles}/wlogout";
+      recursive = true;
+    };
+
     # Environment variables for NixOS specifics
     home.sessionVariables = lib.mkIf hyprlandConf.ozoneWayland.enable {
       NIXOS_OZONE_WL = "1";
