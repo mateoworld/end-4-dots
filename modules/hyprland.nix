@@ -58,12 +58,13 @@ in
     };
 
     # Empty workspaces.conf for nwg-displays compatibility
-    home.activation.hyprWorkspaces = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      ws="$HOME/.config/hypr/workspaces.conf"
-      if [ ! -f "$ws" ]; then
-        touch "$ws"
-      fi
-    '';
+    # Using home.file with mutable text - nwg-displays can modify this file
+    home.file.".config/hypr/workspaces.conf" = {
+      text = ''
+        # This file is managed by nwg-displays
+        # Add workspace monitor assignments here
+      '';
+    };
 
     # Shaders
     home.file.".config/hypr/shaders" = {
