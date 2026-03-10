@@ -5,16 +5,18 @@ stdenv.mkDerivation {
   version = "latest";
 
   src = fetchFromGitHub {
-    owner = "bigsaltyfishes";
+    owner = "end-4";
     repo = "dots-hyprland";
-    rev = "f3881b9bcc67edf268c5e68fa6c51c01d7d9fafe";
-    sha256 = "sha256-0ihJT6gkb+pTGYVdSySWDTzFEikjgNiQhvt+6+c3rZQ=";
+    rev = "a7f1cddd45ae02e6a2ee4178d2f1e72d00fea7f3";
+    sha256 = "sha256-Hubmivb84rXpoUHEtsJOxLOGw3w06OyEtkKYsI2zuBo=";
   };
 
-  installPhase = ''
-    mkdir -p $out
-    cp -r .config/Kvantum/* $out/
+  dontBuild = true;
 
+  installPhase = ''
+    runHook preInstall
+    mkdir -p $out
+    cp -r $src/dots/.config/Kvantum/. $out/
     runHook postInstall
   '';
 
@@ -24,7 +26,7 @@ stdenv.mkDerivation {
   '';
 
   meta = {
-    description = "Kvantum theme written by end-4";
+    description = "Kvantum theme from end-4/dots-hyprland";
     homepage = "https://github.com/end-4/dots-hyprland";
     license = lib.licenses.gpl3;
   };

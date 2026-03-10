@@ -16,8 +16,10 @@ stdenv.mkDerivation {
   dontPatchShebangs = true;
 
   installPhase = ''
+    runHook preInstall
     mkdir -p $out
     cp -r $src/dots/.config/. $out/
+    runHook postInstall
   '';
 
   meta = {
