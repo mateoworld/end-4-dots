@@ -20,7 +20,7 @@ quickshell: { lib, pkgs, ... }:
       };
       quickshellPackage = lib.mkOption {
         type = lib.types.package;
-        default = quickshell.packages.${pkgs.system}.default;
+        default = quickshell.packages.${pkgs.system}.quickshell;
         description = "QuickShell package (unwrapped)";
       };
       ozoneWayland.enable = lib.mkEnableOption "Set NIXOS_OZONE_WL=1";
