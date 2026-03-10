@@ -1,4 +1,4 @@
-ags: { lib, pkgs, ... }:
+quickshell: { lib, pkgs, ... }:
 {
   options.illogical-impulse = {
     enable = lib.mkEnableOption "Enable illogical-impulse";
@@ -18,18 +18,10 @@ ags: { lib, pkgs, ... }:
         default = pkgs.xdg-desktop-portal-hyprland;
         description = "xdg-desktop-portal package for Hyprland";
       };
-      agsPackage = lib.mkOption {
+      quickshellPackage = lib.mkOption {
         type = lib.types.package;
-        default = ags.packages.${pkgs.system}.default.override {
-          extraPackages = with pkgs; [ 
-            gtksourceview
-            gtksourceview4
-            webkitgtk
-            webp-pixbuf-loader
-            ydotool
-          ];
-        };
-        description = "AGS package for Hyprland";
+        default = quickshell.packages.${pkgs.system}.default;
+        description = "QuickShell package (unwrapped)";
       };
       ozoneWayland.enable = lib.mkEnableOption "Set NIXOS_OZONE_WL=1";
     };
@@ -39,9 +31,9 @@ ags: { lib, pkgs, ... }:
           type = lib.types.package;
           default = pkgs.bibata-cursors;
         };
-        theme = lib.mkOption {
+        name = lib.mkOption {
           type = lib.types.str;
-          default = "Bibata-Modern-Ice";
+          default = "Bibata-Modern-Classic";
         };
       };
     };
