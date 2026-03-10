@@ -1,18 +1,31 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 let
   enabled = config.illogical-impulse.enable;
-  selfPkgs = import ../pkgs {
-    inherit pkgs;
-    quickshell = config.illogical-impulse.hyprland.quickshellPackage;
-  };
 in
 {
   config = lib.mkIf enabled {
-    home.packages = [ pkgs.fuzzel ];
+    programs.fuzzel = {
+      enable = true;
+      settings = {
+        main = {
+          font = "Gabarito";
+          terminal = "foot -e";
+          prompt = ">>  ";
+          layer = "overlay";
+        };
 
-    home.file.".config/fuzzel" = {
-      source = "${selfPkgs.illogical-impulse-dotfiles}/fuzzel";
-      recursive = true;
+        border = {
+          radius = 17;
+          width = 1;
+        };
+
+        dmenu = {
+          exit-immediately-if-empty = "yes";
+        };
+
+        # Colors are omitted here - they will be managed by matugen/QuickShell
+        # at runtime via fuzzel_theme.ini
+      };
     };
   };
 }
