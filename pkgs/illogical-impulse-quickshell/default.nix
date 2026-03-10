@@ -1,6 +1,6 @@
 { pkgs, quickshell, ... }:
 let
-  qs = quickshell.packages.${pkgs.system}.default;
+  qs = quickshell.packages.${pkgs.system}.quickshell;
 in pkgs.stdenv.mkDerivation {
   name = "illogical-impulse-quickshell";
   meta = with pkgs.lib; {
