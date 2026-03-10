@@ -2,10 +2,7 @@
 let
   hypr = config.illogical-impulse.hyprland.package;
   hypr-xdg = config.illogical-impulse.hyprland.xdgPortalPackage;
-  selfPkgs = import ../pkgs {
-    inherit pkgs;
-    quickshell = config.illogical-impulse.hyprland.quickshellPackage;
-  };
+  selfPkgs = import ../pkgs { inherit pkgs; };
   enabled = config.illogical-impulse.enable;
   hyprlandConf = config.illogical-impulse.hyprland;
   dotfiles = selfPkgs.illogical-impulse-dotfiles;

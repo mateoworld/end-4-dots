@@ -18,7 +18,6 @@
       system:
       import ./pkgs {
         pkgs = nixpkgs.legacyPackages.${system};
-        inherit quickshell;
       }
     );
     homeManagerModules.default = import ./modules self anyrun quickshell;

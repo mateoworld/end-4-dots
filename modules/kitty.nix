@@ -1,10 +1,7 @@
 { config, lib, pkgs, ... }:
 let
   enabled = config.illogical-impulse.enable;
-  selfPkgs = import ../pkgs {
-    inherit pkgs;
-    quickshell = config.illogical-impulse.hyprland.quickshellPackage;
-  };
+  selfPkgs = import ../pkgs { inherit pkgs; };
 in
 {
   config = lib.mkIf enabled {
