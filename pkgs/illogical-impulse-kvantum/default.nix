@@ -21,6 +21,7 @@ stdenv.mkDerivation {
   '';
 
   postInstall = ''
+    chmod -R +w $out/MaterialAdw
     mv $out/MaterialAdw/MaterialAdw.svg $out/MaterialAdw/MaterialAdw.svg.sample
     mv $out/MaterialAdw/MaterialAdw.kvconfig $out/MaterialAdw/MaterialAdw.kvconfig.sample
   '';
