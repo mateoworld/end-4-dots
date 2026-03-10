@@ -16,15 +16,12 @@ let
 in
 {
   config = lib.mkIf enabled {
-    wayland.windowManager.hyprland = {
+    home.packages = [ hypr ];
+
+    xdg.portal = {
       enable = true;
-      systemd.enable = false;
-      xwayland.enable = true;
-      package = hypr;
-      portalPackage = hypr-xdg;
-      # No settings — config is deployed from upstream dotfiles
-      settings = {};
-      extraConfig = "";
+      extraPortals = [ hypr-xdg ];
+      config.common.default = [ "hyprland" "gtk" ];
     };
 
     # Deploy upstream hyprland config files
@@ -37,10 +34,14 @@ in
     };
 
     # Deploy custom/ skeleton (user-editable overrides)
-    home.file.".config/hypr/custom" = {
-      source = "${dotfiles}/hypr/custom";
-      recursive = true;
-    };
+    home.activation.hyprCustomSkeleton = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      hypr_custom="$HOME/.config/hypr/custom"
+      if [ ! -d "$hypr_custom" ]; then
+        mkdir -p "$hypr_custom"
+        cp -r "${dotfiles}/hypr/custom/"* "$hypr_custom/"
+        chmod -R u+w "$hypr_custom"
+      fi
+    '';
 
     # Deploy hypridle and hyprlock configs from upstream
     home.file.".config/hypr/hypridle.conf" = {
@@ -60,9 +61,12 @@ in
     };
 
     # Empty workspaces.conf for nwg-displays compatibility
-    home.file.".config/hypr/workspaces.conf" = {
-      text = "";
-    };
+    home.activation.hyprWorkspaces = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      ws="$HOME/.config/hypr/workspaces.conf"
+      if [ ! -f "$ws" ]; then
+        touch "$ws"
+      fi
+    '';
 
     # Shaders
     home.file.".config/hypr/shaders" = {
