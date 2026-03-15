@@ -71,6 +71,7 @@ in
         wf-recorder
 
         # Python / build
+        python3
         uv
         gtk4
         libadwaita
