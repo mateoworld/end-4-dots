@@ -1,35 +1,46 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 let
   enabled = config.illogical-impulse.enable;
+  selfPkgs = import ../pkgs { inherit pkgs; };
 in
 {
   config = lib.mkIf enabled {
     programs.kitty = {
       enable = true;
       font = {
-        name = "SpaceMono Nerd Font";
-        size = 12;
+        name = "JetBrains Mono Nerd Font";
+        size = 11;
       };
       settings = {
-        bold_font = "auto";
-        italic_font = "auto";
-        bold_italic_font = "auto";
-        remember_window_size = "no";
-        initial_window_width = "950";
-        initial_window_height = "500";
-        cursor_blink_interval = "0.5";
-        cursor_stop_blinking_after = "1";
-        scrollback_lines = "2000";
-        wheel_scroll_min_lines = "1";
-        enable_audio_bell = "no";
-        window_padding_width = "10";
-        hide_window_decorations = "yes";
-        background_opacity = "0.7";
-        dynamic_background_opacity = "yes";
-        confirm_os_window_close = "0";
-        selection_foreground = "none";
-        selection_background = "none";
+        cursor_shape = "beam";
+        cursor_trail = 1;
+        window_margin_width = "21.75";
+        confirm_os_window_close = 0;
+        shell = "fish";
       };
+      keybindings = {
+        "ctrl+c" = "copy_or_interrupt";
+        "ctrl+f" = "launch --location=hsplit --allow-remote-control kitty +kitten search.py @active-kitty-window-id";
+        "kitty_mod+f" = "launch --location=hsplit --allow-remote-control kitty +kitten search.py @active-kitty-window-id";
+        "page_up" = "scroll_page_up";
+        "page_down" = "scroll_page_down";
+        "ctrl+plus" = "change_font_size all +1";
+        "ctrl+equal" = "change_font_size all +1";
+        "ctrl+kp_add" = "change_font_size all +1";
+        "ctrl+minus" = "change_font_size all -1";
+        "ctrl+underscore" = "change_font_size all -1";
+        "ctrl+kp_subtract" = "change_font_size all -1";
+        "ctrl+0" = "change_font_size all 0";
+        "ctrl+kp_0" = "change_font_size all 0";
+      };
+    };
+
+    # Deploy custom kittens (search.py, scroll_mark.py) — not managed by HM
+    home.file.".config/kitty/search.py" = {
+      source = "${selfPkgs.illogical-impulse-dotfiles}/kitty/search.py";
+    };
+    home.file.".config/kitty/scroll_mark.py" = {
+      source = "${selfPkgs.illogical-impulse-dotfiles}/kitty/scroll_mark.py";
     };
   };
 }

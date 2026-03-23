@@ -1,17 +1,17 @@
-self: anyrun: ags: { ... }:
+self: anyrun: quickshell: { ... }:
 {
   imports = [
-    (import ./options.nix ags)
+    (import ./options.nix quickshell)
     (import ./anyrun.nix anyrun)
+    ./quickshell.nix
     ./hyprland.nix
     ./kitty.nix
-    ./zsh.nix
+    ./fish.nix
     ./hypridle.nix
-    ./fuzzle.nix
+    ./fuzzel.nix
     ./foot.nix
     ./packages.nix
     ./hyprlock.nix
     ./theme.nix
-    ./ags.nix
   ];
 }
